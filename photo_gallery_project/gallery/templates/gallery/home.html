@@ -1,0 +1,66 @@
+{% extends "gallery/base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-white rounded-lg shadow p-8 mb-12">
+    <div class="text-center max-w-2xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4">Welcome to PhotoGallery</h1>
+        <p class="text-lg text-gray-600 mb-6">
+            Explore, share, and store your memories. Whether you're a photographer or just love capturing moments, this is your gallery.
+        </p>
+        <div class="flex justify-center space-x-4">
+            {% if user.is_authenticated %}
+                <a href="{% url 'upload' %}" class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700">Upload Photo</a>
+                <a href="{% url 'photo_list' %}" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">View Gallery</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">Get Started</a>
+                <a href="{% url 'login' %}" class="bg-gray-700 text-white px-5 py-2 rounded hover:bg-gray-800">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured Photos -->
+{% if photos %}
+<section class="mb-12">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Featured Uploads</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {% for photo in photos|slice:":6" %}
+            <div class="bg-white rounded-lg shadow hover:shadow-md transition">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full h-48 object-cover rounded-t">
+                <div class="p-4">
+                    <h3 class="font-semibold text-lg">{{ photo.title }}</h3>
+                    <p class="text-sm text-gray-500">{{ photo.description|truncatewords:15 }}</p>
+                    <p class="text-xs text-gray-400 mt-2">By {{ photo.uploaded_by.username }} • {{ photo.uploaded_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- About Section -->
+<section class="bg-gray-50 border-t py-10">
+    <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Why PhotoGallery?</h2>
+        <p class="text-center text-gray-600 mb-6">
+            We make it simple for you to keep, browse, and share your images — securely and beautifully.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-blue-800">Secure Storage</h3>
+                <p class="text-sm text-gray-600">Your photos are safe, backed by reliable infrastructure.</p>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-blue-800">Simple Upload</h3>
+                <p class="text-sm text-gray-600">Upload images with ease from your dashboard.</p>
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-blue-800">Gallery View</h3>
+                <p class="text-sm text-gray-600">View all uploads in a beautiful responsive gallery layout.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

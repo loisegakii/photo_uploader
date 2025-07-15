@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photo Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    {% comment %} Flowbite {% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-900 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            
+            <!-- Logo / Home link -->
+            <a href="{% url 'home' %}" class="text-2xl font-semibold tracking-wide">📷 PhotoGallery</a>
+            <a href="{% url 'photo_list' %}" class="hover:text-blue-300">Gallery</a>
+            <!-- Navigation Links -->
+            <div class="space-x-6 text-sm md:text-base">
+                {% if user.is_authenticated %}
+                    <!-- Links visible when user is logged in -->
+                    <a href="{% url 'upload' %}" class="hover:text-blue-300 transition">Upload</a>
+                    <a href="{% url 'profile' %}" class="hover:text-blue-300 transition">Profile</a>
+                    <a href="{% url 'logout' %}" class="hover:text-blue-300 transition">Logout</a>
+                {% else %}
+                    <!-- Links visible when user is not logged in -->
+                    <a href="{% url 'login' %}" class="hover:text-blue-300 transition">Login</a>
+                    <a href="{% url 'register' %}" class="hover:text-blue-300 transition">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Section -->
+    <main class="p-6 max-w-5xl mx-auto">
+        <!-- Display Django messages (like login success/error) -->
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="text-{{ message.tags }}-600 bg-{{ message.tags }}-100 px-4 py-2 rounded">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Page content gets injected here -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>
